@@ -5,11 +5,17 @@ function goQuery(){
     console.log('jq in');
     $('#createButton').on('click', createList);
     getTasks();
-    $('#listContiner').on('click', '.addButton', addTask);
+    $('#listContainer').on('click', '.addButton', addTask);
 }
 
+// html and bootstrap
+var deleteButton = "<button class='btn btn-danger'>Delete List</button>";
+var taskAndButton = "<div class = 'form-group'><input type='text'><button class= 'addButton btn btn-primary'>Create</button></div>";
+//function to create a task, send to database, append to dom
 function addTask(){
-    
+    console.log('button clicked');
+    var task = $(this).prev().val();
+
 }
 
 //function to create list when #createButton is pressed
@@ -22,6 +28,7 @@ function createList(){
         title: true,
     }
     postData(listObject);
+    getTasks();
 }
 
 //function to post data to server
@@ -47,14 +54,13 @@ function getTasks(){
 }
 //takes in array appends all to DOM
 function appendAll(array){
-    var deleteButton = "<button class='btn btn-danger'>Delete List</button>";
-    var taskAndButton = "<input type='text'><button class= 'addButton btn btn-primary'>Create</button>";
     for (var i = 0; i < array.length; i++){
         if (array[i].title == true){
-            $("#listContainer").prepend('<div class= "list form-inline" id=' + array[i].list + '><label>' + array[i].list + '</label>' + deleteButton + taskAndButton+ '</div>');
+            $("#listContainer").prepend('<div id=' + array[i].list + '><div class="form-group"><label>' + array[i].list + '</label>' + deleteButton + '</div>' + taskAndButton+ '</div>');
         }
         else {
             $("#", array[i].list).prepend<('<input class= "messageCheckbox" type="checkbox" value=' + array[i].id + '>' );
         }
     }
 }
+
