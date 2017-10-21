@@ -30,11 +30,13 @@ router.get('/', function(req, res){
         }
     });//end of pool
 });//end of get
+
 //PUT
 //router.put
 //DELETE
 //router.delete
-//POST route to accept either list name or list item
+
+//POST route to accept list name
 router.post('/', function(req,res){
 var task = (req.body).objectIn;
 pool.connect(function(errorConnecting, db, done){
@@ -42,8 +44,8 @@ pool.connect(function(errorConnecting, db, done){
         console.log('Error connecting', errorConnecting);
         res.sendStatus(500);
     } else {
-        var queryText = 'INSERT INTO "tasks" ("list", "complete", "task", "title", "date") VALUES ($1, $2, $3, $4, $5);';
-        db.query(queryText, [task.list, task.complete, task.task, task.title, task.date], function (errorMakingQuery, result) {
+        var queryText = 'INSERT INTO "tasks" ("list", "complete", "task", "title") VALUES ($1, $2, $3, $4);';
+        db.query(queryText, [task.list, task.complete, task.task, task.title], function (errorMakingQuery, result) {
             done();
             if (errorMakingQuery){
                 console.log('Error making query ', errorMakingQuery);
