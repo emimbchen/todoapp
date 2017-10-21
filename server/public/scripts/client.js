@@ -4,6 +4,7 @@ $(document).ready(goQuery);
 function goQuery(){
     console.log('jq in');
     $('#createButton').on('click', createList);
+    getTasks();
 }
 
 //function to create list when #createButton is pressed
@@ -22,9 +23,19 @@ function createList(){
 function postData(objectIn){
     $.ajax ({
         method: 'POST',
-        url: '/task/',
+        url: '/task',
         data: { objectIn }
     }).done(function(response){
        console.log(response);
     });
-} // end of post
+}
+
+//function to get data from server
+function getTasks(){
+    $.ajax({
+        method: 'GET',
+        url: '/task',
+    }).done(function(response){
+        console.log(response);
+    });
+}

@@ -11,15 +11,32 @@ var config = {
 var pool = new pg.Pool(config);
 
 //GET
-//router.get
+router.get('/', function(req, res){
+    pool.connect(function(errorConnecting, db, done){
+        if(errorConnecting){
+            console.log('Error connecting ', errorConnecting);
+            res.sendStatus(500);
+        } else {
+            var queryText = 'SELECT * FROM "tasks" ORDER BY "date" ASC;';
+            db.query(queryText, function(errorMakingQuery, result){
+                done();
+                if(errorMakingQuery){
+                    console.log('errorMakingQuery', errorMakingQuery);
+                    res.sendStatus(500);
+                } else {
+                    res.send(result.rows);
+                }
+            });
+        }
+    });//end of pool
+});//end of get
 //PUT
 //router.put
 //DELETE
 //router.delete
-//POST
+//POST route to accept either list name or list item
 router.post('/', function(req,res){
 var task = (req.body).objectIn;
-console.log(task.objectIn);
 pool.connect(function(errorConnecting, db, done){
     if(errorConnecting){
         console.log('Error connecting', errorConnecting);
