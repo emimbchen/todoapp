@@ -17,7 +17,7 @@ router.get('/', function(req, res){
             console.log('Error connecting ', errorConnecting);
             res.sendStatus(500);
         } else {
-            var queryText = 'SELECT * FROM "tasks" ORDER BY "date" ASC;';
+            var queryText = 'SELECT * FROM "tasks";';
             db.query(queryText, function(errorMakingQuery, result){
                 done();
                 if(errorMakingQuery){
@@ -34,7 +34,28 @@ router.get('/', function(req, res){
 //PUT
 //router.put
 //DELETE
-//router.delete
+router.delete('/:id', function(req,res){
+    var id = req.params.id;
+    console.log(id);
+    pool.connect(function(errorConnecting, db, done){
+        if(errorConnecting){
+            console.log('Error connecting', errorConnecting);
+            res.send(500);
+        } else {
+            var queryText = 'DELETE FROM "tasks" WHERE ("listid" =' +id+') OR ("id" = '+id+');';
+            db.query(queryText, function(errorMakingQuery, result){
+            done();
+            if(errorMakingQuery){
+                console.log('Error making Query ', errorMakingQuery);
+                res.sendStatus(500);
+            } else {
+                //success!
+                res.sendStatus(201);
+            }
+        });
+    }
+    });//end of pool
+});//end of delete
 
 //POST route to accept list name
 router.post('/', function(req,res){
@@ -44,8 +65,8 @@ pool.connect(function(errorConnecting, db, done){
         console.log('Error connecting', errorConnecting);
         res.sendStatus(500);
     } else {
-        var queryText = 'INSERT INTO "tasks" ("list", "complete", "task", "title") VALUES ($1, $2, $3, $4);';
-        db.query(queryText, [task.list, task.complete, task.task, task.title], function (errorMakingQuery, result) {
+        var queryText = 'INSERT INTO "tasks" ("list", "complete", "task", "title", "listid") VALUES ($1, $2, $3, $4, $5);';
+        db.query(queryText, [task.list, task.complete, task.task, task.title, task.listid], function (errorMakingQuery, result) {
             done();
             if (errorMakingQuery){
                 console.log('Error making query ', errorMakingQuery);
