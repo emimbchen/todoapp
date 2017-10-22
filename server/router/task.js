@@ -32,7 +32,28 @@ router.get('/', function(req, res){
 });//end of get
 
 //PUT
-//router.put
+router.put('/:id', function(req, res){
+    var id = req.params.id;
+    var status = req.body;
+    console.log(id);
+    pool.connect(function(errorConnecting, db, done){
+        if(errorConnecting){
+            console.log('Error connecting', errorConnecting);
+            res.send(500);
+        } else {
+            var queryText = 'UPDATE "tasks" SET "complete" = $1 WHERE ("id" ='+ id +');';
+            db.query(queryText,[status.complete], function(errorMakingQuery, result){
+                done();
+                if(errorMakingQuery){
+                    console.log(errorMakingQuery);
+                    res.sendStatus(500);
+                } else{
+                    res.sendStatus(201);
+                }
+            });
+        }
+    });//end pool
+});//end put route
 //DELETE
 router.delete('/:id', function(req,res){
     var id = req.params.id;
@@ -42,7 +63,7 @@ router.delete('/:id', function(req,res){
             console.log('Error connecting', errorConnecting);
             res.send(500);
         } else {
-            var queryText = 'DELETE FROM "tasks" WHERE ("listid" =' +id+') OR ("id" = '+id+');';
+            var queryText = 'DELETE FROM "tasks" WHERE ("listid" =' + id +') OR ("id" = '+ id +');';
             db.query(queryText, function(errorMakingQuery, result){
             done();
             if(errorMakingQuery){

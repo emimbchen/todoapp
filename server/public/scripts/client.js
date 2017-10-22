@@ -14,18 +14,30 @@ function goQuery() {
 
 //update checked boxes events
 function doneUpdate() {
+    var checkBox = $(this).children()[0];
     var checkedId = $(this).attr('id');
-    if($('.form-check-label').checked){
-        console.log('this is a checked thing');
-    // $.ajax({
-    //     method: 'UPDATE',
-    //     url: '/task/' + checkedId,
-    //     data: {
-    //         complete: true
-    //     }
-    // }).done(function(response){
-    //     console.log(response);
-    // })
+    if(checkBox.checked){
+    $.ajax({
+        method: 'PUT',
+        url: '/task/' + checkedId,
+        data: {
+            complete: true
+        }
+    }).done(function(response){
+        console.log(response);
+        getTasks();
+    });
+    } else {
+        $.ajax({
+            method: 'PUT',
+            url: '/task/' + checkedId,
+            data: {
+                complete: false
+            }
+        }).done(function (response) {
+            console.log(response);
+            getTasks();
+        })
     }
 }
 
@@ -35,7 +47,7 @@ function addTask() {
     var task = $(this).prev().val();
     $(this).prev().val("");
     console.log(task);
-    var listId = $(this).parent().prev().attr('id');
+    var listId = $(this).parent().parent().attr('id');
     console.log(listId)
     var taskObject = {
         complete: false,
@@ -97,28 +109,31 @@ function deleteButton(evt) {
 //hide list
 function hidButton(evt) {
     evt.preventDefault();
-    console.log('hide button pressed');
+    var hide = $(this).parent().parent().next();
+    $(hide).toggle();
 }
 
-// html and bootstrap
-var hideButton = '<button class="btn hideButton">Hide List</button>'
-var delButton = '<button class= "btn btn-danger deleteButton"> Delete </button>'
-var createButton = '<button class="btn btn-success createButton">Create Task</button>'
+
 // for add button after taskInput '<button class= "addButton btn btn-primary" data-list =' + array[i].list + '>Create</button></div>';
 //takes in array appends all to DOM
 
 function appendAll(array) {
+    // html and bootstrap
+    var hideButton = '<button class="btn hideButton">Hide List</button>'
+    var delButton = '<button class= "btn btn-danger deleteButton"> Delete </button>'
+    var createButton = '<button class="btn btn-success createButton">Create Task</button>'
     $('#listContainer').empty();
+    
     for (var i = 0; i < array.length; i++) {
         if (array[i].title == true) {
-            $('#listContainer').append('<div id=' + array[i].id + '><form class="form-inline><div class="form-group"><h3>' + array[i].list + '</h3>' + hideButton + delButton + '</div> <div class="form-inline"><input type="text">' + createButton + '</div></form></div>');
+            $('#listContainer').append('<div id="'+ array[i].id +'"><form class="form-inline><div class="form-group"><h3>' + array[i].list + '</h3>' + hideButton + delButton + '</div> <div id= "' + array[i].id + '"><div class="'+ array[i].id +' form-inline"><input type="text">' + createButton + '</div></form></div>');
         }
         else {
             if(array[i].complete == true){
-                $('#' + array[i].listid).append('<div class="form-check"><label id="' + array[i].id + '"class="form-check-label"><input checked class ="form-check-input" type="checkbox" value="">' + array[i].task + '</label></div>');
+                $('.' + array[i].listid).append('<div class="form-check"><label id="' + array[i].id + '"class="form-check-label"><input checked class ="form-check-input" type="checkbox" value="">' + array[i].task + '</label></div>');
 
             }else {
-            $('#' + array[i].listid).append('<div class="form-check"><label id="'+ array[i].id+'"class="form-check-label"><input class ="form-check-input" type="checkbox" value="">' + array[i].task + '</label></div>');
+            $('.' + array[i].listid).append('<div class="form-check"><label id="'+ array[i].id+'"class="form-check-label"><input class ="form-check-input" type="checkbox" value="">' + array[i].task + '</label></div>');
             }
         }
     }
