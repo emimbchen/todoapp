@@ -1,3 +1,12 @@
 h3 {
     display: inline-block;
+    color: #000629;
+}
+
+.hidden{
+    display:none;
+}
+
+h1 {
+    text-align: center;
 }

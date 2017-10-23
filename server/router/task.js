@@ -31,6 +31,29 @@ router.get('/', function(req, res){
     });//end of pool
 });//end of get
 
+//edit task PUT
+router.put('/edit/:id', function (req, res) {
+    var id = req.params.id;
+    var status = req.body;
+    console.log(id);
+    pool.connect(function (errorConnecting, db, done) {
+        if (errorConnecting) {
+            console.log('Error connecting', errorConnecting);
+            res.send(500);
+        } else {
+            var queryText = 'UPDATE "tasks" SET "task" = $1 WHERE "id" =' + id + ';';
+            db.query(queryText, [status.task], function (errorMakingQuery, result) {
+                done();
+                if (errorMakingQuery) {
+                    console.log(errorMakingQuery);
+                    res.sendStatus(500);
+                } else {
+                    res.sendStatus(201);
+                }
+            });
+        }
+    });//end pool
+});//end put route
 //PUT
 router.put('/:id', function(req, res){
     var id = req.params.id;
