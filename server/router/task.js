@@ -8,7 +8,8 @@ var config = {
     max: 10,
     idleTimeoutMillis: 3000
 };
-var pool = new pg.Pool(config);
+var poolModule = require('../modules/pool.js');
+var pool = poolModule;
 
 //GET
 router.get('/', function(req, res){
