@@ -1,12 +1,28 @@
 h3 {
     display: inline-block;
-    color: #000629;
+    color: #001B5D;
+    margin: 8px;
+    border-bottom: solid;
+    border-top: solid;
+    border-color: #001B5D;
+    
 }
 
 .hidden{
     display:none;
 }
 
-h1 {
+label {
+    color: #001B5D;
+    font-size: 2rem;
+}
+
+.jumbotron {
+    background-color: white;
     text-align: center;
+    border-color: #001B5D;
+    border-style: solid;
+    color: #001B5D;
+    font-size: 5rem;
+    font-weight: bold;
 }
