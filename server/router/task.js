@@ -17,7 +17,7 @@ router.get('/', function(req, res){
             console.log('Error connecting ', errorConnecting);
             res.sendStatus(500);
         } else {
-            var queryText = 'SELECT * FROM "tasks";';
+            var queryText = 'SELECT * FROM "tasks" ORDER BY "id" ASC;';
             db.query(queryText, function(errorMakingQuery, result){
                 done();
                 if(errorMakingQuery){
@@ -41,7 +41,7 @@ router.put('/:id', function(req, res){
             console.log('Error connecting', errorConnecting);
             res.send(500);
         } else {
-            var queryText = 'UPDATE "tasks" SET "complete" = $1 WHERE ("id" ='+ id +');';
+            var queryText = 'UPDATE "tasks" SET "complete" = $1 WHERE "id" ='+ id +';';
             db.query(queryText,[status.complete], function(errorMakingQuery, result){
                 done();
                 if(errorMakingQuery){

@@ -77,7 +77,6 @@ function postData(objectIn) {
         url: '/task',
         data: { objectIn }
     }).done(function (response) {
-        console.log(response);
         getTasks();
     });
 }
@@ -133,7 +132,7 @@ function appendAll(array) {
                 $('.' + array[i].listid).append('<div class="form-check"><label id="' + array[i].id + '"class="form-check-label"><input checked class ="form-check-input" type="checkbox" value="">' + array[i].task + '</label></div>');
 
             }else {
-            $('.' + array[i].listid).append('<div class="form-check"><label id="'+ array[i].id+'"class="form-check-label"><input class ="form-check-input" type="checkbox" value="">' + array[i].task + '</label></div>');
+            $('.' + array[i].listid).prepend('<div class="form-check"><label id="'+ array[i].id+'"class="form-check-label"><input class ="form-check-input" type="checkbox" value="">' + array[i].task + '</label></div>');
             }
         }
     }
